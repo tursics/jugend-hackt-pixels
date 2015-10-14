@@ -1,0 +1,160 @@
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<script src="figures.js"></script>
+	<style>
+		body {padding:0;margin:0;background:#888;overflow:hidden;}
+		div {position:absolute;width:1em;height:1em;background:none;}
+
+		.honeycomb {position:absolute;width:8.8em;height:7.51em;z-index:0;background:#c7d4d9;border-left:.21em solid #dde5e8;-webkit-transform:rotateX(0deg) rotateY(0deg) rotateZ(0deg) !important;-ms-transform:rotateX(0deg) rotateY(0deg) rotateZ(0deg) !important;transform:rotateX(0deg) rotateY(0deg) rotateZ(0deg) !important;}
+		.honeycomb:before {content:"";display:block;border-left:.21em solid #dde5e8;height:7.51em;margin-left:4.3em;}
+		.honeycomb:after {content:"";display:block;background:#c7d4d9;border:.3em solid #dde5e8;margin:-8em 0 0 1.1em;width:6em;height:6em;-webkit-transform:rotateX(56deg) rotateZ(45deg);-ms-transform:rotateX(56deg) rotateZ(45deg);transform:rotateX(56deg) rotateZ(45deg);}
+
+		div.b {background:#29abe1;}
+		div.g {background:#5fdba4;}
+		div.k {background:#000000;}
+		div.r {background:#f86d15;}
+		div.w {background:#ffffff;}
+		div.y {background:#ffd400;}
+		div.t {background:rgba(255,255,255,.5);}
+		div.no {background:none;}
+
+		.flipx div {-webkit-transition:background 1s,left 1s,top 1s,-webkit-transform 1s;transition:background 1s,left 1s,top 1s,transform 1s;-webkit-transform:rotateX(-180deg);transform:rotateX(-180deg);}
+		.flipy div {-webkit-transition:background 1s,left 1s,top 1s,-webkit-transform 1s;transition:background 1s,left 1s,top 1s,transform 1s;-webkit-transform:rotateY(-180deg);transform:rotateY(-180deg);}
+		.linear div {-webkit-transition:background 1s ease-out,left 1s,top 1s;transition:background 1s ease-out,left 1s,top 1s;}
+		.rotate90 div {-webkit-transition:background 1s,left 1s,top 1s,-webkit-transform 1s;transition:background 1s,left 1s,top 1s,transform 1s;-ms-transform:rotate(90deg);-webkit-transform:rotate(90deg);transform:rotate(90deg);}
+		.rotate180 div {-webkit-transition:background 1s,left 1s,top 1s,-webkit-transform 1s;transition:background 1s,left 1s,top 1s,transform 1s;-ms-transform:rotate(180deg);-webkit-transform:rotate(180deg);transform:rotate(180deg);}
+		.rotate270 div {-webkit-transition:background 1s,left 1s,top 1s,-webkit-transform 1s;transition:background 1s,left 1s,top 1s,transform 1s;-ms-transform:rotate(270deg);-webkit-transform:rotate(270deg);transform:rotate(270deg);}
+		.rotate360 div {-webkit-transition:background 1s,left 1s,top 1s,-webkit-transform 1s;transition:background 1s,left 1s,top 1s,transform 1s;-ms-transform:rotate(360deg);-webkit-transform:rotate(360deg);transform:rotate(360deg);}
+		.shifth div {-webkit-transition:background 1s,left .5s ease-out 0.5s,top .5s ease-in 0s;transition:background 1s,left .5s ease-out 0.5s,top .5s ease-in 0s;}
+		.shiftv div {-webkit-transition:background 1s,left .5s ease-in 0s,top .5s ease-out .5s;transition:background 1s,left .5s ease-in 0s,top .5s ease-out .5s;}
+		.snap div {-webkit-transition:background 1s ease-out,left 1s ease-out,top 1s ease-in;transition:background 1s ease-out,left 1s ease-out,top 1s ease-in;}
+	</style>
+</head>
+<body>
+<script>
+	var transitions = ['flipx','flipy','linear','rotate90','rotate180','rotate270','rotate360','shifth','shiftv','snap'];
+	var blocks = [];
+	var figuresx = [];
+	var figuresy = [];
+	var currentfigure = 0;
+	var currenttransition = 0;
+	var winx = window.innerWidth || document.documentElement.clientWidth;
+	var winy = window.innerHeight || document.documentElement.clientHeight;
+	var maxx = 0;
+	var maxy = 0;
+
+	for(var index = 0;index < figures.length;++index)
+	{
+		var figure = figures[index];
+		var figurex = 0;
+
+		for(var posx = 0,posy = 1,i = 0;i < figure.length;++i)
+		{
+			if('|' == figure[i])
+			{
+				figurex = Math.max( figurex, posx);
+				posx = 0;
+				++posy;
+			}
+			else
+			{
+				++posx;
+			}
+		}
+		figurex = Math.max( figurex, posx);
+		maxx = Math.max( maxx, figurex);
+		maxy = Math.max( maxy, posy);
+		figuresx[ index] = figurex;
+		figuresy[ index] = posy;
+	}
+
+	var px = Math.min( parseInt( winx / (maxx + 4)), parseInt( winy / (maxy + 4)));
+	document.body.style.fontSize = px+'px';
+
+	for(var i = 0;i < 700;++i)
+	{
+		var element = document.createElement('div');
+		element.style.zIndex = 1000-i;
+		document.body.appendChild(element);
+		blocks.push(element);
+	}
+
+	for(var y = 0;y < 20;++y)
+	{
+		for(var x = 0;x < 20;++x)
+		{
+			var element = document.createElement('div');
+			element.style.top = (7.5*y)+'em';
+			element.style.left = (x*9-(y%2)*4.5)+'em';
+			element.className = 'honeycomb';
+			document.body.appendChild(element);
+		}
+	}
+
+	function setBlock(index,posx,posy,color)
+	{
+		var style = blocks[index].style;
+		style.left = posx + 'em';
+		style.top = posy + 'em';
+		blocks[index].className = color;
+	}
+
+	function hideBlock(index)
+	{
+		blocks[index].className = 'no';
+	}
+
+	function showFigure(index)
+	{
+		var figure = figures[index];
+		var block = 0;
+		var offsetx = (winx / px - figuresx[index]) / 2;
+		var offsety = (winy / px - figuresy[index]) / 2;
+		for(var posx = 0,posy = 0,i = 0;i < figure.length;++i)
+		{
+			if('|' == figure[i])
+			{
+				posx = 0;
+				++posy;
+			}
+			else if(' ' == figure[i])
+			{
+				++posx;
+			}
+			else
+			{
+				setBlock(block++,offsetx + posx,offsety + posy,figure[i]);
+				++posx;
+			}
+		}
+		for(;block < blocks.length;)
+		{
+			hideBlock(block++);
+		}
+	}
+
+	function timerfunc()
+	{
+		var figure = 0;
+		do {
+			figure = Math.floor(Math.random() * figures.length);
+		} while( currentfigure == figure);
+		currentfigure = figure;
+
+		var transition = 0;
+		do {
+			transition = Math.floor(Math.random() * transitions.length);
+		} while( currenttransition == transition);
+		currenttransition = transition;
+
+		document.body.className = transitions[currenttransition];
+		showFigure(figure);
+	}
+
+	showFigure(currentfigure);
+
+	var interval = setInterval(timerfunc,3000);
+</script>
+</body>
+</html>
