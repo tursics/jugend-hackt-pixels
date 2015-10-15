@@ -5,9 +5,10 @@
 	<style>
 		body {padding:0;margin:0;background:#888;overflow:hidden;}
 		div {position:absolute;width:1em;height:1em;background:none;}
+		img {position:absolute;z-index:1001;top:1em;left:1em;height:4em;}
 
-		.honeycomb {position:absolute;width:8.8em;height:7.51em;z-index:0;background:#c7d4d9;border-left:.21em solid #dde5e8;-webkit-transform:rotateX(0deg) rotateY(0deg) rotateZ(0deg) !important;-ms-transform:rotateX(0deg) rotateY(0deg) rotateZ(0deg) !important;transform:rotateX(0deg) rotateY(0deg) rotateZ(0deg) !important;}
-		.honeycomb:before {content:"";display:block;border-left:.21em solid #dde5e8;height:7.51em;margin-left:4.3em;}
+		.honeycomb {position:absolute;width:8.81em;height:7.6em;z-index:0;background:#c7d4d9;border-left:.21em solid #dde5e8;-webkit-transform:rotateX(0deg) rotateY(0deg) rotateZ(0deg) !important;-ms-transform:rotateX(0deg) rotateY(0deg) rotateZ(0deg) !important;transform:rotateX(0deg) rotateY(0deg) rotateZ(0deg) !important;}
+		.honeycomb:before {content:"";display:block;border-left:.21em solid #dde5e8;height:7.6em;margin-left:4.3em;}
 		.honeycomb:after {content:"";display:block;background:#c7d4d9;border:.3em solid #dde5e8;margin:-8em 0 0 1.1em;width:6em;height:6em;-webkit-transform:rotateX(56deg) rotateZ(45deg);-ms-transform:rotateX(56deg) rotateZ(45deg);transform:rotateX(56deg) rotateZ(45deg);}
 
 		div.b {background:#29abe1;}
@@ -32,6 +33,7 @@
 	</style>
 </head>
 <body>
+<img src="logo.svg">
 <script>
 	var transitions = ['flipx','flipy','linear','rotate90','rotate180','rotate270','rotate360','shifth','shiftv','snap'];
 	var blocks = [];
